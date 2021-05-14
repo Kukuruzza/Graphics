@@ -167,6 +167,16 @@ namespace UnityEngine.Rendering.HighDefinition
 
                 var volumetricLighting = VolumetricLightingPass(m_RenderGraph, hdCamera, prepassOutput.depthPyramidTexture, volumetricDensityBuffer, maxZMask, gpuLightListOutput.bigTileLightList, shadowResult);
 
+                //DDE{
+                {
+                    var ssaoSettings = hdCamera.volumeStack.GetComponent<AmbientOcclusion>();
+                    if (hdCamera.frameSettings.IsEnabled(FrameSettingsField.SSAO) && ssaoSettings.intensity.value > 0f)
+                    {
+                        RenderCustomPass(m_RenderGraph, hdCamera, lightingBuffers.ambientOcclusionBuffer, prepassOutput, customPassCullingResults, cullingResults, CustomPassInjectionPoint.AfterSsaoDde, aovRequest, aovCustomPassBuffers);
+                    }
+                }
+                //}DDE
+
                 var deferredLightingOutput = RenderDeferredLighting(m_RenderGraph, hdCamera, colorBuffer, prepassOutput.depthBuffer, prepassOutput.depthPyramidTexture, lightingBuffers, prepassOutput.gbuffer, shadowResult, gpuLightListOutput);
 
                 RenderForwardOpaque(m_RenderGraph, hdCamera, colorBuffer, lightingBuffers, gpuLightListOutput, prepassOutput.depthBuffer, vtFeedbackBuffer, shadowResult, prepassOutput.dbuffer, cullingResults);

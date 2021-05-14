@@ -26,5 +26,7 @@ namespace UnityEngine.Rendering.HighDefinition
         BeforePostProcess           = 2,
         /// <summary>This injection point is before HDRP renders post-processing and custom post-processing effects.</summary>
         AfterPostProcess            = 3,
+        /// <summary> DDE - After SSAO is finished, so we can modify it
+        AfterSsaoDde                = 100,
     }
 }
